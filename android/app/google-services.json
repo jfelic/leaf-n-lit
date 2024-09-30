@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "458024576591",
+    "project_id": "leafnlit",
+    "storage_bucket": "leafnlit.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:458024576591:android:9cae9fc0239bdd9f5bac3a",
+        "android_client_info": {
+          "package_name": "com.example.leaf_n_lit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCH-pozzsEJX7KnmudPYG1OJ3GvtZu_0pw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

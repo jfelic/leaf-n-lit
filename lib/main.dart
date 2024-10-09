@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'splash_screen.dart';
+import 'package:leaf_n_lit/screens/splash/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,6 +11,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,8 +23,10 @@ class MyApp extends StatelessWidget {
       // Define routes to switch between screens
       initialRoute: '/',
       routes: {
-        '/': (context) => const SplashScreen(), // Set the splash screen as the initial route
-        '/home': (context) => const MyHomePage(title: 'Flutter Demo Home Page'), // Original home screen
+        '/': (context) =>
+            const SplashScreen(), // Set the splash screen as the initial route
+        '/home': (context) => const MyHomePage(
+            title: 'Flutter Demo Home Page'), // Original home screen
       },
     );
   }

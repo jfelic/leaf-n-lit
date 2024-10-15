@@ -58,7 +58,8 @@ class RegistrationScreen extends StatelessWidget {
 
             ElevatedButton(
               onPressed: () {
-                // Handle registration logic
+                // TODO: Implement registration logic with Firebase Auth
+                print('Register button pressed');
               },
               child: const Text('Register'),
             ),

@@ -1,12 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
+
+// Routes
 import 'package:leaf_n_lit/screens/splash/splash_screen.dart';
 import 'package:leaf_n_lit/screens/splash/registration/registration_screen.dart';
+import 'app_state.dart';
+
+// Define routes to switch between screens using GoRouter
+final GoRouter _router = GoRouter(
+  routes: [
+    // GoRoute(
+    //   path: "/",
+    //   builder: (context, state) => const SplashScreen(),
+    // ),
+    GoRoute(
+      path: "/",
+      builder: (context, state) => const MyHomePage(title: 'Leaf & Lit'),
+    ),
+    GoRoute(
+      path: "/register",
+      builder: (context, state) => RegistrationScreen(),
+    ),
+  ],
+);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(const MyApp());
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ApplicationState(),
+      builder: (context, child) => const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -14,20 +46,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Leaf & Lit',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
         useMaterial3: true,
       ),
-      // Define routes to switch between screens
-      initialRoute: '/',
-      routes: {
-        '/': (context) =>
-            const SplashScreen(), // Set the splash screen as the initial route
-        '/home': (context) => const MyHomePage(
-            title: 'Flutter Demo Home Page'), // Original home screen
-      },
+      routerConfig: _router,
     );
   }
 }
@@ -72,7 +97,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
             ElevatedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationScreen()));
+                context.push("/register"); // Using GoRouter to navigate to the registration screen
+                // could also use context.go() or context.replace() to navigate to the registration screen
               },
               child: const Text('Register'),
             ),

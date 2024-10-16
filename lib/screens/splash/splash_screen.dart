@@ -42,45 +42,35 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
   @override
   void dispose() {
-    // Dispose of the controller when the widget is removed to prevent memory leaks.
+    // Dispose of the controller when the widget is removed to prevent memory leaks
     _controller.dispose();
     super.dispose();
   }
 
-  @override
+@override
   Widget build(BuildContext context) {
-    // Build the UI for the Splash screen.
+    // Build the UI for the Splash screen
     return Scaffold(
       body: Center(
-        // Center the content of the screen.
+        // Center the content of the screen
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, // Vertically center the children.
+          mainAxisAlignment: MainAxisAlignment.center, // vertically center the children
           children: [
-            // A simple placeholder for a book logo using a Container widget.
-            Container(
-              height: 100, // set height of the container.
-              width: 100, // set width of the container.
-              decoration: const BoxDecoration(
-                shape: BoxShape.rectangle, // use a rectangular box shape.
-                color: Colors.white, // set the box color to white.
-              ),
-              child: const Center(
-                child: Icon(
-                  Icons.book, // simple book icon from the default flutter icons.
-                  size: 60, // size of the icon.
-                  color: Colors.green, // color of the book icon.
-                ),
-              ),
+            // Display the image (book with plant logo) from assets
+            Image.asset(
+              'lib/leaf_n_lit_logo.png', // ath to our image in the lib folder
+              width: 150, // Set the image width
+              height: 150, // Set the image height
             ),
-            const SizedBox(height: 20.0), // Add space between the book icon and text.
+            const SizedBox(height: 20.0), // Add space between the image and text.
 
-            // Display the name of your app under the icon.
-            Text(
-              'Leaf & Lit', // Text label for the app.
+            // Display the name of our app under the icon
+            const Text(
+              "Leaf n' Lit", // Text label for the app
               style: TextStyle(
                 fontSize: 24.0, // Font size set to 24.
                 fontWeight: FontWeight.bold, // Make the text bold.
-                color: _animation.value, // Set text color to follow the animation's current color.
+                color: Color.fromARGB(255, 69, 126, 212), // Set text color to follow the animation's current color.
               ),
             ),
           ],

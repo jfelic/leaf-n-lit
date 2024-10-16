@@ -13,6 +13,8 @@ class MyApp extends StatelessWidget {
       title: 'Leaf n\' Lit',
       theme: ThemeData(
         useMaterial3: true, // Enable Material 3
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 40, 70, 41)),
       ),
       home: HomeScreen(),
     );

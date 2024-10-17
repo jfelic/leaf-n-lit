@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:leaf_n_lit/utilities/auth_service.dart';
+import 'package:leaf_n_lit/main.dart';  
+import 'package:go_router/go_router.dart';
 
 class RegistrationScreen extends StatefulWidget {
-
   @override
   State<RegistrationScreen> createState() => _RegistrationScreenState();
 }

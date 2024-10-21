@@ -56,7 +56,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center, // vertically center the children
           children: [
-            // Display the image (book with plant logo) from assets
+            // Display the image  from assets
             Image.asset(
               'lib/leaf_n_lit_logo.png', // ath to our image in the lib folder
               width: 150, // Set the image width

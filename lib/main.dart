@@ -28,7 +28,7 @@ final GoRouter _router = GoRouter(
   routes: [
     GoRoute(
       path: "/",
-      builder: (context, state) => const LoginScreen(),
+      builder: (context, state) => LoginScreen(),
     ),
     GoRoute(
       path: "/home",
@@ -42,14 +42,14 @@ final GoRouter _router = GoRouter(
       path: "/library",
       builder: (context, state) => LibraryPage(),
     ),
-    // GoRoute(
-    //   path: "/search",
-    //   builder: (context, state) => const SearchScreen(),
-    // ),
-    // GoRoute(
-    //   path: "/garden",
-    //   builder:(context, state) => const GardenPage(),
-    // ),
+    GoRoute(
+      path: "/search",
+      builder: (context, state) => const SearchScreen(),
+    ),
+    GoRoute(
+      path: "/garden",
+      builder:(context, state) => const GardenPage(),
+    ),
   ],
 );
 

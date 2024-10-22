@@ -5,10 +5,10 @@ class CustomNavigationBar extends StatelessWidget {
   final ValueChanged<int> onItemTapped;
 
   const CustomNavigationBar({
-    super.key,
+    Key? key,
     required this.selectedIndex,
     required this.onItemTapped,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

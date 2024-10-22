@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:leaf_n_lit/utilities/auth_service.dart';
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -12,11 +12,13 @@ class LoginScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Login'),
       ),
+      
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+
             TextField(
               controller: emailController,
               decoration: InputDecoration(
@@ -25,7 +27,9 @@ class LoginScreen extends StatelessWidget {
               ),
               keyboardType: TextInputType.emailAddress,
             ),
+
             SizedBox(height: 16.0),
+
             TextField(
               controller: passwordController,
               decoration: InputDecoration(
@@ -34,24 +38,42 @@ class LoginScreen extends StatelessWidget {
               ),
               obscureText: true,
             ),
+
             SizedBox(height: 20.0),
+
             ElevatedButton(
-              onPressed: () {
-                // Trigger the login function here
-                String email = emailController.text;
-                String password = passwordController.text;
-
-                // Add your authentication logic here
-                print('Login with: $email, $password');
-
-                // Navigate to the home screen
-                GoRouter.of(context).go('/home');
-              },
+              onPressed: () { loginPressed(context); },
               child: Text('Login'),
+            ),
+
+            const SizedBox(height: 20.0),
+
+            GestureDetector(
+              onTap: () {
+                // Navigate to the registration screen
+                GoRouter.of(context).push('/register');
+              },
+              child: Text(
+                'Or, create an account',
+                style: TextStyle(
+                  color: Colors.blue,
+                  decoration: TextDecoration.underline,
+                )
+              ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  void loginPressed(BuildContext context) {
+    String email = emailController.text;
+    String password = passwordController.text;
+
+    AuthService authService = AuthService();
+    authService.signInWithEmailAndPassword(email, password);
+
+    GoRouter.of(context).go('/home');
   }
 }

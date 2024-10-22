@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -67,8 +68,8 @@ class _LibraryPageState extends State<LibraryPage> {
                     leading: CachedNetworkImage(
                       imageUrl: _books[index].coverUrl,
                       placeholder: (context, url) =>
-                          CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
+                          const CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
                     ),
                     title: Text(_books[index].title),
                     subtitle: Text(_books[index].author),

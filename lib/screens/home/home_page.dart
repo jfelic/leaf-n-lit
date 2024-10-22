@@ -15,7 +15,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
-  // Stopwatch-related variables
+  // Stopwatch related variables
   String hoursString = "00", minuteString = "00", secondString = "00";
   int hours = 0, minutes = 0, seconds = 0;
   bool isTimerRunning = false, isResetButtonVisible = false;

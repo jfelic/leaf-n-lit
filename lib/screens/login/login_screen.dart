@@ -1,10 +1,6 @@
-// login_screen.dart
-/*
- * Login Screen for the Leaf N' Lit app
- * Allows user to enter email and password and login.
- */
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -47,6 +43,9 @@ class LoginScreen extends StatelessWidget {
 
                 // Add your authentication logic here
                 print('Login with: $email, $password');
+
+                // Navigate to the home screen
+                GoRouter.of(context).go('/home');
               },
               child: Text('Login'),
             ),

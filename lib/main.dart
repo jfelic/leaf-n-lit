@@ -8,7 +8,7 @@ import 'screens/home/home_page.dart';
 import 'screens/registration/registration_screen.dart';
 import 'screens/login/login_screen.dart';
 import 'screens/library/library.dart';
-// import 'screens/library/search.dart';
+import 'screens/library/search.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,10 +46,10 @@ final GoRouter _router = GoRouter(
       path: "/search",
       builder: (context, state) => const SearchScreen(),
     ),
-    GoRoute(
-      path: "/garden",
-      builder:(context, state) => const GardenPage(),
-    ),
+    // GoRoute(
+    //   path: "/garden",
+    //   builder:(context, state) => const GardenPage(),
+    // ),
   ],
 );
 

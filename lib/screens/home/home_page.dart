@@ -1,4 +1,4 @@
-import 'dart:async'; // Import for the timer functionality
+import 'dart:async'; // import for the timer function
 import 'package:flutter/material.dart';
 import 'package:leaf_n_lit/screens/library/library.dart';
 import 'package:leaf_n_lit/widgets/nav_bar.dart';
@@ -21,7 +21,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isTimerRunning = false, isResetButtonVisible = false;
   late Timer _timer;
 
-  // Initialize the list of pages with the stopwatch as the first screen
+  // list of pages with the stopwatch as the first screen
   final List<Widget> _pages = [
     Center(
       child: Column(
@@ -54,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  // ause the timer
+  // pause the timer
   void pauseTimer() {
     _timer.cancel();
     setState(() {

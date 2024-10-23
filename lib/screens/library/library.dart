@@ -1,84 +1,63 @@
 import 'package:flutter/material.dart';
-// ignore: depend_on_referenced_packages
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:leaf_n_lit/screens/library/search.dart';
 
-class LibraryPage extends StatefulWidget {
-  @override
-  _LibraryPageState createState() => _LibraryPageState();
-}
-
-class _LibraryPageState extends State<LibraryPage> {
-  final TextEditingController _controller = TextEditingController();
-  List<Book> _books = [];
-
-  Future<void> _addBook(String query) async {
-    // Replace this URL with a real API endpoint for fetching book data
-    final String apiUrl =
-        'https://www.googleapis.com/books/v1/volumes?q=$query';
-
-    final response = await http.get(Uri.parse(apiUrl));
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      if (data['items'] != null) {
-        setState(() {
-          _books.addAll(
-              data['items'].map<Book>((item) => Book.fromJson(item)).toList());
-        });
-      }
-    } else {
-      throw Exception('Failed to load books');
-    }
-  }
-
+class LibraryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Library'),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _controller,
-              decoration: InputDecoration(
-                hintText: 'Enter book title, author, or ISBN',
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.search),
-                  onPressed: () {
-                    if (_controller.text.isNotEmpty) {
-                      _addBook(_controller.text);
-                      _controller.clear();
-                    }
-                  },
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _books.length,
-              itemBuilder: (context, index) {
-                return Card(
-                  child: ListTile(
-                    leading: CachedNetworkImage(
-                      imageUrl: _books[index].coverUrl,
-                      placeholder: (context, url) =>
-                          const CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => const Icon(Icons.error),
-                    ),
-                    title: Text(_books[index].title),
-                    subtitle: Text(_books[index].author),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('users')
+            //.doc(FirebaseAuth.instance.currentUser!.uid)
+            //.collection('books')
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final books = snapshot.data!.docs
+              .map((doc) => Book.fromFirestore(doc))
+              .toList();
+
+          return ListView.builder(
+            itemCount: books.length,
+            itemBuilder: (context, index) {
+              return Card(
+                child: ListTile(
+                  leading: CachedNetworkImage(
+                    imageUrl: books[index].coverUrl,
+                    placeholder: (context, url) =>
+                        const CircularProgressIndicator(),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                   ),
-                );
-              },
-            ),
-          ),
-        ],
+                  title: Text(books[index].title),
+                  subtitle: Text(books[index].author),
+                ),
+              );
+            },
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SearchScreen()),
+          );
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -88,19 +67,21 @@ class Book {
   final String title;
   final String author;
   final String coverUrl;
+  final String isbn;
 
-  Book({required this.title, required this.author, required this.coverUrl});
+  Book(
+      {required this.title,
+      required this.author,
+      required this.coverUrl,
+      required this.isbn});
 
-  factory Book.fromJson(Map<String, dynamic> json) {
+  factory Book.fromFirestore(DocumentSnapshot doc) {
+    Map data = doc.data() as Map<String, dynamic>;
     return Book(
-      title: json['volumeInfo']['title'] ?? 'Unknown Title',
-      author: (json['volumeInfo']['authors'] != null &&
-              json['volumeInfo']['authors'].isNotEmpty)
-          ? json['volumeInfo']['authors'][0]
-          : 'Unknown Author',
-      coverUrl: (json['volumeInfo']['imageLinks'] != null)
-          ? json['volumeInfo']['imageLinks']['thumbnail']
-          : '',
+      title: data['title'] ?? 'Unknown Title',
+      author: data['author'] ?? 'Unknown Author',
+      coverUrl: data['coverUrl'] ?? '',
+      isbn: data['isbn'] ?? 'Unknown ISBN',
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+
 import 'utilities/firebase_options.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
@@ -36,7 +37,7 @@ final GoRouter _router = GoRouter(
     ),
     GoRoute(
       path: "/register",
-      builder: (context, state) => RegistrationScreen(),
+      builder: (context, state) => const RegistrationScreen(),
     ),
     GoRoute(
       path: "/library",

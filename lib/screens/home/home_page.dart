@@ -15,8 +15,8 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    Center(child: Text('Home')),
-    Center(child: Text('Garden')),
+    const Center(child: Text('Home')),
+    const Center(child: Text('Garden')),
     LibraryPage(),
   ];
 

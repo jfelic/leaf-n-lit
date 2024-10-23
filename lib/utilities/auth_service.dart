@@ -14,4 +14,18 @@ class AuthService {
       print(e.message);
     }
   }
+
+  // Login with email and password
+  Future<UserCredential?> signInWithEmailAndPassword (String email, String password) async {
+    try {
+      // on success
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+      return userCredential; // Return user credential if login is successful
+    } on FirebaseAuthException catch (e) {
+      // on error
+      print("Failed with error code: ${e.code}");
+      print(e.message);
+      return null; // Return null if login fails
+    }
+  }
 }

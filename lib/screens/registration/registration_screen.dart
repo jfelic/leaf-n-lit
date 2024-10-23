@@ -113,5 +113,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
     AuthService authService = AuthService();
     authService.createUserWithEmailAndPassword(email, password);
+    GoRouter.of(context).go('/home');
   }
 }

@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "458024576591",
+    "firebase_url": "https://leafnlit-default-rtdb.firebaseio.com",
     "project_id": "leafnlit",
     "storage_bucket": "leafnlit.appspot.com"
   },

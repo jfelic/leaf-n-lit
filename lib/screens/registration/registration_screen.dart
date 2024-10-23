@@ -102,7 +102,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
   }
 
-  void registerPressed() {
+  void registerPressed() async {
     // TODO: Implement registration logic with Firebase Auth
     // - Display an error message if something goes wrong
     print('Register button pressed');
@@ -111,8 +111,36 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     String password = passwordController.text;
     String confirmPassword = confirmPasswordController.text;
 
+    if(password != confirmPassword) {
+      print('Passwords do not match');
+      return;
+    }
+
     AuthService authService = AuthService();
-    authService.createUserWithEmailAndPassword(email, password);
-    GoRouter.of(context).go('/home');
+
+    // await the result of the createUserWithEmailAndPassword method
+    String? createUserWithEmailAndPasswordResult = await authService.createUserWithEmailAndPassword(email, password);
+
+    if(createUserWithEmailAndPasswordResult == null) {
+      // Registration was successful
+      GoRouter.of(context).go('/home');
+    } else {
+      // Registration failed
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Registration Failed'),
+          content: Text(createUserWithEmailAndPasswordResult),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 }

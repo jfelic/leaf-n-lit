@@ -48,17 +48,15 @@ class LoginScreen extends StatelessWidget {
 
             const SizedBox(height: 20.0),
 
-            GestureDetector(
-              onTap: () {
-                // Navigate to the registration screen
-                GoRouter.of(context).push('/register');
-              },
-              child: Text(
-                'Or, create an account',
-                style: TextStyle(
-                  color: Colors.blue,
-                  decoration: TextDecoration.underline,
-                )
+            TextButton(
+            onPressed:()  {
+              GoRouter.of(context).push('/register');
+            }, 
+            child: Text("Or, create an account",
+            style: TextStyle(
+              color: Colors.blue,
+              decoration: TextDecoration.underline,
+               )
               ),
             ),
           ],

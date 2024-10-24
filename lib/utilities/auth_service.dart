@@ -23,7 +23,7 @@ class AuthService {
       if (e.code == "weak-password") {
         return "The password provided is too weak.";
       } else if (e.code == "email-already-in-use") {
-        return "The account already exists for that email.";
+        return "An account already exists for that email.";
       } else {
         return e.message;
       }

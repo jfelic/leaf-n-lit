@@ -17,6 +17,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  String? _errorMessage;
 
   @override
   void dispose() {
@@ -96,6 +97,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               onPressed: registerPressed,
               child: const Text('Register'),
             ),
+
+            const SizedBox(height: 16.0),
+
+            // Text widget that displays error message to user
+            Center(
+              child: Text(
+                _errorMessage ?? '',
+                style: TextStyle(color: Colors.red),
+              ),
+            )
           ],
         ),
       ),
@@ -103,7 +114,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   void registerPressed() async {
-    // TODO: Implement registration logic with Firebase Auth
     // - Display an error message if something goes wrong
     print('Register button pressed');
     String name = nameController.text;
@@ -112,7 +122,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     String confirmPassword = confirmPasswordController.text;
 
     if(password != confirmPassword) {
-      print('Passwords do not match');
+      setState(() {
+        _errorMessage = 'Passwords do not match';
+      });
+
       return;
     }
 
@@ -126,21 +139,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       GoRouter.of(context).go('/home');
     } else {
       // Registration failed
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Registration Failed'),
-          content: Text(createUserWithEmailAndPasswordResult),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
+      setState(() {
+        _errorMessage = createUserWithEmailAndPasswordResult;
+      });
     }
   }
 }

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:leaf_n_lit/utilities/api_config.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -13,40 +15,97 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _controller = TextEditingController();
   List<Book> _books = [];
+  bool _isLoading = false;
+  String _errorMessage = '';
+  Timer? _debounce;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<http.Response> makeApiCallWithDelay(String url) async {
+    final response = await http.get(Uri.parse(url));
+    await Future.delayed(Duration(seconds: 1)); // 1 second delay
+    return response;
+  }
+
+  void _onSearchChanged(String query) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      _searchBooks(query);
+    });
+  }
 
   Future<void> _searchBooks(String query) async {
-    final String apiUrl =
-        'https://www.googleapis.com/books/v1/volumes?q=$query';
-    final response = await http.get(Uri.parse(apiUrl));
+    setState(() {
+      _isLoading = true;
+      _errorMessage = '';
+    });
 
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      if (data['items'] != null) {
-        setState(() {
-          _books =
-              data['items'].map<Book>((item) => Book.fromJson(item)).toList();
-        });
+    try {
+      final String apiUrl =
+          'https://www.googleapis.com/books/v1/volumes?q=${Uri.encodeComponent(query)}&key=$apiKey';
+      final response = await makeApiCallWithDelay(apiUrl);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['items'] != null) {
+          setState(() {
+            _books = (data['items'] as List)
+                .map<Book>((item) => Book.fromJson(item))
+                .where((book) => book.isValid())
+                .toList();
+          });
+        } else {
+          setState(() {
+            _errorMessage = 'No books found';
+          });
+        }
+      } else {
+        throw Exception('Failed to load books: ${response.statusCode}');
       }
-    } else {
-      throw Exception('Failed to load books');
+    } catch (e) {
+      print('Error searching books: $e');
+      setState(() {
+        _errorMessage = 'An error occurred while searching for books: $e';
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
   Future<void> _addToLibrary(Book book) async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .collection('books')
-          .add({
-        'isbn': book.isbn,
-        'title': book.title,
-        'author': book.author,
-        'coverUrl': book.coverUrl,
-      });
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .collection('books')
+            .add({
+          'isbn': book.isbn,
+          'title': book.title,
+          'author': book.author,
+          'coverUrl': book.coverUrl,
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${book.title} added to your library')),
+        );
+      }
+    } catch (e) {
+      print('Error adding book to library: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${book.title} added to your library')),
+        SnackBar(content: Text('Failed to add book to library')),
       );
     }
   }
@@ -69,42 +128,46 @@ class _SearchScreenState extends State<SearchScreen> {
                   icon: const Icon(Icons.search),
                   onPressed: () {
                     if (_controller.text.isNotEmpty) {
-                      _searchBooks(_controller.text);
+                      _onSearchChanged(_controller.text);
                     }
                   },
                 ),
               ),
-              onSubmitted: (value) {
-                if (value.isNotEmpty) {
-                  _searchBooks(value);
-                }
-              },
+              onChanged: _onSearchChanged,
             ),
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _books.length,
-              itemBuilder: (context, index) {
-                return Card(
-                  child: ListTile(
-                    leading: CachedNetworkImage(
-                      imageUrl: _books[index].coverUrl,
-                      placeholder: (context, url) =>
-                          const CircularProgressIndicator(),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
+          if (_isLoading)
+            CircularProgressIndicator()
+          else if (_errorMessage.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(_errorMessage, style: TextStyle(color: Colors.red)),
+            )
+          else
+            Expanded(
+              child: ListView.builder(
+                itemCount: _books.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: ListTile(
+                      leading: CachedNetworkImage(
+                        imageUrl: _books[index].coverUrl,
+                        placeholder: (context, url) =>
+                            const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      ),
+                      title: Text(_books[index].title),
+                      subtitle: Text(_books[index].author),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.add),
+                        onPressed: () => _addToLibrary(_books[index]),
+                      ),
                     ),
-                    title: Text(_books[index].title),
-                    subtitle: Text(_books[index].author),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.add),
-                      onPressed: () => _addToLibrary(_books[index]),
-                    ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-          ),
         ],
       ),
     );
@@ -117,26 +180,35 @@ class Book {
   final String coverUrl;
   final String isbn;
 
-  Book(
-      {required this.title,
-      required this.author,
-      required this.coverUrl,
-      required this.isbn});
+  Book({
+    required this.title,
+    required this.author,
+    required this.coverUrl,
+    required this.isbn,
+  });
 
   factory Book.fromJson(Map<String, dynamic> json) {
+    final volumeInfo = json['volumeInfo'] ?? {};
     return Book(
-      title: json['volumeInfo']['title'] ?? 'Unknown Title',
-      author: (json['volumeInfo']['authors'] != null &&
-              json['volumeInfo']['authors'].isNotEmpty)
-          ? json['volumeInfo']['authors'][0]
+      title: volumeInfo['title'] ?? 'Unknown Title',
+      author: (volumeInfo['authors'] != null && volumeInfo['authors'] is List)
+          ? (volumeInfo['authors'] as List).join(', ')
           : 'Unknown Author',
-      coverUrl: (json['volumeInfo']['imageLinks'] != null)
-          ? json['volumeInfo']['imageLinks']['thumbnail']
-          : '',
-      isbn: (json['volumeInfo']['industryIdentifiers'] != null &&
-              json['volumeInfo']['industryIdentifiers'].isNotEmpty)
-          ? json['volumeInfo']['industryIdentifiers'][0]['identifier']
+      coverUrl: volumeInfo['imageLinks']?['thumbnail'] ?? '',
+      isbn: (volumeInfo['industryIdentifiers'] != null &&
+              volumeInfo['industryIdentifiers'] is List)
+          ? ((volumeInfo['industryIdentifiers'] as List).firstWhere(
+                (identifier) => identifier['type'] == 'ISBN_13',
+                orElse: () => {'identifier': 'Unknown ISBN'},
+              )['identifier'] ??
+              'Unknown ISBN')
           : 'Unknown ISBN',
     );
+  }
+
+  bool isValid() {
+    return title != 'Unknown Title' &&
+        author != 'Unknown Author' &&
+        isbn != 'Unknown ISBN';
   }
 }

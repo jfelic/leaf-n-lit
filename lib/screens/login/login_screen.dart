@@ -2,9 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:leaf_n_lit/utilities/auth_service.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
+
+  String? _errorMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +27,7 @@ class LoginScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
 
+            // Enter email
             TextField(
               controller: emailController,
               decoration: InputDecoration(
@@ -30,6 +39,7 @@ class LoginScreen extends StatelessWidget {
 
             SizedBox(height: 16.0),
 
+            // Enter password
             TextField(
               controller: passwordController,
               decoration: InputDecoration(
@@ -41,6 +51,7 @@ class LoginScreen extends StatelessWidget {
 
             SizedBox(height: 20.0),
 
+            // Login button
             ElevatedButton(
               onPressed: () { loginPressed(context); },
               child: Text('Login'),
@@ -48,30 +59,57 @@ class LoginScreen extends StatelessWidget {
 
             const SizedBox(height: 20.0),
 
+            // Don't have an account? Create one
             TextButton(
             onPressed:()  {
               GoRouter.of(context).push('/register');
             }, 
-            child: Text("Or, create an account",
-            style: TextStyle(
-              color: Colors.blue,
-              decoration: TextDecoration.underline,
-               )
-              ),
+            child: RichText(text: const TextSpan(
+              text: "Don't have an account? ",
+              style: TextStyle(color: Colors.black),
+              children: <TextSpan>[
+                TextSpan(
+                  text: 'Create one',
+                  style: TextStyle(color: Colors.blue),
+                    ),
+                  ],
+                ),
+              )
             ),
+
+            // Display error message
+            Center(
+              child: Text(
+                _errorMessage ?? '',
+                style: TextStyle(color: Colors.red),
+              )
+            ),
+
+            const SizedBox(height: 16.0),
+
+            // TODO: Implement 'Forgot Password' functionality
           ],
         ),
       ),
     );
   }
 
-  void loginPressed(BuildContext context) {
+  void loginPressed (BuildContext context) async {
     String email = emailController.text;
     String password = passwordController.text;
 
     AuthService authService = AuthService();
-    authService.signInWithEmailAndPassword(email, password);
 
-    GoRouter.of(context).go('/home');
+    String? signInWithEmailAndPasswordResponse = await authService.signInWithEmailAndPassword(email, password);
+
+    if(signInWithEmailAndPasswordResponse == null) {
+      // Login was successful
+      GoRouter.of(context).go('/home');
+    } else {
+      // Login was unsuccessful
+      setState(() {
+        _errorMessage = signInWithEmailAndPasswordResponse;
+      });
+    }
   }
 }

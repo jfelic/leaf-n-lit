@@ -27,6 +27,10 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
 
+            Image.asset('assets/tree.png'),
+ 
+            const SizedBox(height: 16.0),
+
             // Enter email
             TextField(
               controller: emailController,
@@ -69,8 +73,8 @@ class _LoginScreenState extends State<LoginScreen> {
               style: TextStyle(color: Colors.black),
               children: <TextSpan>[
                 TextSpan(
-                  text: 'Create one',
-                  style: TextStyle(color: Colors.blue),
+                  text: 'Register',
+                  style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),

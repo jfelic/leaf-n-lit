@@ -100,7 +100,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
             const SizedBox(height: 16.0),
 
-            // Text widget that displays error message to user
+            // Display error
             Center(
               child: Text(
                 _errorMessage ?? '',

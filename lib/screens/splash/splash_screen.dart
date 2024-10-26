@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     _controller.forward(); // Start the animation.
 
     // Use a delay to automatically navigate to the Home Page after 3 seconds.
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 5), () {
       // Use GoRouter to navigate to the home screen
       context.go('/home');
     });

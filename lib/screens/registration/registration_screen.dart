@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leaf_n_lit/utilities/auth_service.dart';
+import 'package:leaf_n_lit/main.dart';  
 import 'package:go_router/go_router.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -68,7 +69,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
             // Password
             TextField(
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Password',
               ),
@@ -80,7 +81,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
             // Confirm Password
             TextField(
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Confirm Password',
               ),
@@ -105,6 +106,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     // TODO: Implement registration logic with Firebase Auth
     // - Display an error message if something goes wrong
     print('Register button pressed');
+    String name = nameController.text;
     String email = emailController.text;
     String password = passwordController.text;
     String confirmPassword = confirmPasswordController.text;

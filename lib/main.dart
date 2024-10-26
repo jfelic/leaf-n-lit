@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:leaf_n_lit/screens/splash/splash_screen.dart';
-
 import 'utilities/firebase_options.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
@@ -11,7 +10,7 @@ import 'screens/registration/registration_screen.dart';
 import 'screens/login/login_screen.dart';
 import 'screens/library/library.dart';
 import 'screens/library/search.dart';
- // Import Splash Screen
+//import 'screens/splash_screen.dart'; // Import the Splash Screen.
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,11 +27,10 @@ void main() async {
 
 // Define routes to switch between screens using GoRouter
 final GoRouter _router = GoRouter(
-  initialLocation: "/", // Set initial route to splash screen
   routes: [
     GoRoute(
       path: "/",
-      builder: (context, state) => const SplashScreen(), // Initial splash screen
+      builder: (context, state) => const SplashScreen(),
     ),
     GoRoute(
       path: "/login",

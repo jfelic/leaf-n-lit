@@ -45,7 +45,7 @@ final GoRouter _router = GoRouter(
     ),
     GoRoute(
       path: "/search",
-      builder: (context, state) => SearchScreen(),
+      builder: (context, state) => const SearchScreen(),
     ),
     // GoRoute(
     //   path: "/garden",

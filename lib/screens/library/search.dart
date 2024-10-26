@@ -5,9 +5,10 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:leaf_n_lit/utilities/api_config.dart';
 
 class SearchScreen extends StatefulWidget {
+  const SearchScreen({super.key});
+
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
@@ -18,6 +19,8 @@ class _SearchScreenState extends State<SearchScreen> {
   bool _isLoading = false;
   String _errorMessage = '';
   Timer? _debounce;
+  
+  get apiKey => null;
 
   @override
   void initState() {

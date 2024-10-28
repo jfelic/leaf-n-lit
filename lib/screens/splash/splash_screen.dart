@@ -51,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'lib/leaf_n_lit_logo.png',
+              'assets/leaf_n_lit_logo.png',
               width: 150,
               height: 150,
             ),
@@ -61,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
               style: TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 69, 126, 212),
+                color: Color.fromARGB(255, 255, 255, 255),
               ),
             ),
           ],

@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: <TextSpan>[
                 TextSpan(
                   text: 'Register',
-                  style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                  style: TextStyle(color: Color.fromARGB(255, 55, 126, 57), fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),

@@ -10,7 +10,6 @@ import 'screens/registration/registration_screen.dart';
 import 'screens/login/login_screen.dart';
 import 'screens/library/library.dart';
 import 'screens/library/search.dart';
-//import 'screens/splash_screen.dart'; // Import the Splash Screen.
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,15 +33,56 @@ final GoRouter _router = GoRouter(
     ),
     GoRoute(
       path: "/login",
-      builder: (context, state) => LoginScreen(),
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: LoginScreen(),
+          transitionDuration: const Duration(milliseconds: 800),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+            opacity: animation, 
+            child: child);
+          }
+        );
+      },
     ),
     GoRoute(
       path: "/home",
-      builder: (context, state) => const MyHomePage(title: 'Leaf & Lit'),
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: MyHomePage(title: "Leaf n' Lit"),
+          transitionDuration: const Duration(milliseconds: 350),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return SlideTransition(
+              position: Tween<Offset> (
+                begin: const Offset(1.0, 0.0),
+                end: Offset.zero,
+              ).animate(animation),
+              child: child,
+            );
+          }
+        );
+      },
     ),
     GoRoute(
       path: "/register",
-      builder: (context, state) => const RegistrationScreen(),
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: RegistrationScreen(),
+          transitionDuration: const Duration(milliseconds: 350),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return SlideTransition(
+              position: Tween<Offset> (
+                begin: const Offset(1.0, 0.0),
+                end: Offset.zero,
+              ).animate(animation),
+              child: child,
+            );
+          }
+        );
+      },
     ),
     GoRoute(
       path: "/library",
@@ -50,7 +90,22 @@ final GoRouter _router = GoRouter(
     ),
     GoRoute(
       path: "/search",
-      builder: (context, state) => SearchScreen(),
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: SearchScreen(),
+          transitionDuration: const Duration(milliseconds: 350),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return SlideTransition(
+              position: Tween<Offset> (
+                begin: const Offset(1.0, 0.0),
+                end: Offset.zero,
+              ).animate(animation),
+              child: child,
+            );
+          }
+        );
+      },
     ),
   ],
 );
@@ -63,7 +118,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Leaf & Lit',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
       ),
       routerConfig: _router,

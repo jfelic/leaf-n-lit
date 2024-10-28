@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-
+import 'package:leaf_n_lit/screens/splash/splash_screen.dart';
 import 'utilities/firebase_options.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
@@ -10,6 +10,7 @@ import 'screens/registration/registration_screen.dart';
 import 'screens/login/login_screen.dart';
 import 'screens/library/library.dart';
 import 'screens/library/search.dart';
+//import 'screens/splash_screen.dart'; // Import the Splash Screen.
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +30,10 @@ final GoRouter _router = GoRouter(
   routes: [
     GoRoute(
       path: "/",
+      builder: (context, state) => const SplashScreen(),
+    ),
+    GoRoute(
+      path: "/login",
       builder: (context, state) => LoginScreen(),
     ),
     GoRoute(
@@ -47,10 +52,6 @@ final GoRouter _router = GoRouter(
       path: "/search",
       builder: (context, state) => SearchScreen(),
     ),
-    // GoRoute(
-    //   path: "/garden",
-    //   builder:(context, state) => const GardenPage(),
-    // ),
   ],
 );
 

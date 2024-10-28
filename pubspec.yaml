@@ -64,7 +64,8 @@ flutter:
   
   # Define the location of your assets (images, etc.).
   assets:
-    - lib/leaf_n_lit_logo.png  # Path to your logo image stored in the lib folder.
+    - assets/leaf_n_lit_logo.png
+    - assets/tree.png
   
   # To add assets to your application, add an assets section, like this:
   # assets:

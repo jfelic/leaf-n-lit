@@ -10,8 +10,27 @@ class ApplicationState extends ChangeNotifier {
     init();
   }
 
+  // Firebase Auth State
   bool _loggedIn = false;
   bool get loggedIn => _loggedIn;
+
+  // App-wide State
+  int stopwatchHours = 0;
+  int stopwatchMinutes = 0; 
+
+  // Methods for Session
+  // Update stopwatchHour based on user's session length
+  void updateStopwatchHours(double newStopwatchHours) {
+    stopwatchHours = newStopwatchHours.toInt();
+    notifyListeners();
+  }
+
+  // Update stopwatchHour based on user's session length
+  void updateStopwatchMinutes(double newStopwatchMinutes) {
+    stopwatchMinutes = newStopwatchMinutes.toInt();
+    notifyListeners();
+  }
+
 
   Future<void> init() async {
     await Firebase.initializeApp(

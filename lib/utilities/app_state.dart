@@ -15,8 +15,8 @@ class ApplicationState extends ChangeNotifier {
   bool get loggedIn => _loggedIn;
 
   // App-wide State
-  int stopwatchHours = 0;
-  int stopwatchMinutes = 0; 
+  int stopwatchHours = 1;
+  int stopwatchMinutes = 45; 
 
   // Methods for Session
   // Update stopwatchHour based on user's session length

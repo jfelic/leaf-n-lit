@@ -4,7 +4,7 @@
     import 'package:flutter/material.dart';
     import 'package:go_router/go_router.dart';
     import 'package:provider/provider.dart';
-    import 'package:leaf_n_lit/screens/home/stopwatch_display.dart';
+    // import 'package:leaf_n_lit/screens/home/stopwatch_display.dart';
     import 'package:leaf_n_lit/utilities/app_state.dart';
 
     class SessionPage extends StatefulWidget {
@@ -31,19 +31,17 @@
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(stopwatchMinutes >= 10
-                  // If stopwatchMinutes >= 10: 
-                  ? "${appState.stopwatchHours}:${appState.stopwatchMinutes}"
-                  // else: 
-                  : "$stopwatchHours:0$stopwatchMinutes"
-                ),
+                Text(
+                  '${stopwatchHours.toString().padLeft(2, '0')}:${stopwatchMinutes.toString().padLeft(2, '0')}',
+                  style: TextStyle(fontSize: 30), // Optional: make it more visible
+),
 
 
                 const SizedBox(height: 16),
 
                 ElevatedButton(
                   onPressed: () {
-                    print("Start Session Pressed");
+                    appState.startSession();
                   },
                   child: const Text('Start Session'),
                 ),
@@ -60,7 +58,7 @@
                     const SizedBox(width: 16),
                     ElevatedButton(
                       onPressed: () {
-                        print("Choose Plant Pressed");
+                        appState.stopSession();
                       },
                       child: const Text("Choose Plant"),
                     ),

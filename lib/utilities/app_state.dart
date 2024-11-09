@@ -18,34 +18,39 @@ class ApplicationState extends ChangeNotifier {
   // App-wide State fields
   int stopwatchHours = 1;
   int stopwatchMinutes = 45; 
+  int totalSeconds = 0;
 
   // Timer related fields
   Timer? _sessionTimer;
-  Duration _remainingTime = Duration.zero;
 
-  Duration get remainingTime => _remainingTime;
-
-  /* Methods for Timer */
   // Start the Timer
   void startSession() {
-    final sessionDuration = Duration(hours: stopwatchHours, minutes: stopwatchMinutes);
-    _remainingTime = sessionDuration;
-
-    // Cancel any exitsting timers
+    // Cancel any existing timers
     _sessionTimer?.cancel();
 
-    // Timer will run every second
-    _sessionTimer = Timer.periodic(const Duration(seconds: 1), (timer){
-      // all of this happens every second:
-      if(_remainingTime.inSeconds <= 0) { // if timer is done
-        timer.cancel(); // Stop timer
-        _onSessionComplete(); // Handle end of session
-      } else { // timer not done yet
-        _remainingTime -= const Duration(seconds: 1); // Decrement remaining time
+    // Convert stopwatchHours and stopwatchMinutes to seconds:
+    totalSeconds = convertHoursMinutestoSeconds(stopwatchHours, stopwatchMinutes);
+
+    // Create timer
+    _sessionTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      print('Timer ticked');
+
+      if(totalSeconds <= 0) { // Timer is finished
+        _sessionTimer?.cancel(); // Cancel timer
+        _onSessionComplete(); // handle session completion
+        stopwatchHours = 0;
+        stopwatchMinutes = 0;
+      } else {
+        stopwatchHours = totalSeconds ~/ 3600;
+        print("stopwatchHours: $stopwatchHours");
+
+        stopwatchMinutes = (totalSeconds % 3600) ~/ 60; 
+        print("stopwatchMinutes: $stopwatchMinutes");
+        totalSeconds -= 1; // Decrement total seconds
         notifyListeners(); // Notify UI of changes
       }
     });
-  }
+  } // End of Timer
 
   // Pause the session
   void pauseSession() {
@@ -55,19 +60,26 @@ class ApplicationState extends ChangeNotifier {
   // Stop the session
   void stopSession() {
     _sessionTimer?.cancel();
-    _remainingTime = Duration.zero; // Reset remaining time
+    stopwatchHours = 0;
+    stopwatchMinutes = 0;
     notifyListeners();
   } // stopSession() end
 
   // Handle the end of a session
-  // Private function
   void _onSessionComplete() {
     // TODO: Handle when the session ends
   } // _onSessionComplete() end
 
-  /* End of methods for Timer */
+  // Convert hours and minutes to seconds
+  int convertHoursMinutestoSeconds (int hours, int minutes) {
+    int hoursToSeconds = hours * 3600;
 
-  /* Methods for Session */
+    int minutesToSeconds = minutes * 60;
+
+    print("Total seconds: ${hoursToSeconds + minutesToSeconds}");
+    return hoursToSeconds + minutesToSeconds + 59; //Adding 59 seconds to not truncate immediatedly
+  } // convertHoursMinutesToSeconds() end
+
   // Update stopwatchHour based on user's session length
   void updateStopwatchHours(double newStopwatchHours) {
     stopwatchHours = newStopwatchHours.toInt();
@@ -79,9 +91,6 @@ class ApplicationState extends ChangeNotifier {
     stopwatchMinutes = newStopwatchMinutes.toInt();
     notifyListeners();
   } // updateStopWatchMinutes() end
-
-  /* End of methods for Session */
-
 
   Future<void> init() async {
     await Firebase.initializeApp(

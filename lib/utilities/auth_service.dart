@@ -13,9 +13,9 @@ class AuthService {
   // Create account with email and password
   Future<String?> createUserWithEmailAndPassword(String email, String password) async {
     try { // If the operation is successful, the user will be signed in and the user's information will be returned in the UserCredential object which we can use.
-      UserCredential userCredential =await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password); 
+      // UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password); 
       
-      // We could preform additional tasks here, like storing userCrenetials in our database.
+      // We could perform additional tasks here, like storing userCrenetials in our database.
 
       return null; // Return user credential to caller
     
@@ -38,7 +38,7 @@ class AuthService {
   // Login with email and password
   Future<String?> signInWithEmailAndPassword (String email, String password) async {
     try { // Success
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+      // UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
 
       return null; // Return null if login is successful
 

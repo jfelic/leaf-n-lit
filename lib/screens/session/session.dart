@@ -1,5 +1,4 @@
     import 'package:flutter/material.dart';
-    import 'package:go_router/go_router.dart';
     import 'package:provider/provider.dart';
     // import 'package:leaf_n_lit/screens/home/stopwatch_display.dart';
     import 'package:leaf_n_lit/utilities/app_state.dart';

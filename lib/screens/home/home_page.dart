@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:leaf_n_lit/screens/library/library.dart';
 import 'package:leaf_n_lit/widgets/nav_bar.dart';
-import 'stopwatch_display.dart';
+// import 'stopwatch_display.dart';
 import 'package:leaf_n_lit/screens/session/session.dart';
 
 class MyHomePage extends StatefulWidget {

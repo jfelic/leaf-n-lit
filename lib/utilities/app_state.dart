@@ -1,17 +1,24 @@
 import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, PhoneAuthProvider;
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
-import 'firebase_options.dart';
 import 'dart:async';
+
+enum SessionState {
+  active,
+  inactive,
+  paused
+}
 
 class ApplicationState extends ChangeNotifier {
   ApplicationState() {
-    init();
+    // Listen to auth state changes
+    FirebaseAuth.instance.userChanges().listen((user) {
+      _loggedIn = user != null;
+      notifyListeners();
+    });
   }
 
-  // Firebase Auth State
+  // Firebase Auth State (I believe this is being used in library.dart)
   bool _loggedIn = false;
   bool get loggedIn => _loggedIn;
 
@@ -19,14 +26,16 @@ class ApplicationState extends ChangeNotifier {
   int stopwatchHours = 1;
   int stopwatchMinutes = 45; 
   int totalSeconds = 0;
-  bool isSessionActive = false;
+  SessionState sessionState = SessionState.inactive;
+
 
   // Timer related fields
   Timer? _sessionTimer;
 
   // Start the Timer
   void startSession() {
-    isSessionActive = true;
+    sessionState = SessionState.active;
+    notifyListeners();
     // Cancel any existing timers
     _sessionTimer?.cancel();
 
@@ -56,12 +65,20 @@ class ApplicationState extends ChangeNotifier {
 
   // Pause the session
   void pauseSession() {
+    sessionState = SessionState.paused;
+    notifyListeners();
     // TODO: Find a way to pause session without completely cancelling
   } // pauseSession() end
 
+  // Resume the session after pausing
+  void resumeSession() {
+    sessionState = SessionState.active;
+    notifyListeners();
+  } // resumeSession() end
+
   // Stop the session
   void stopSession() {
-    isSessionActive = false;
+    sessionState = SessionState.inactive;
     _sessionTimer?.cancel();
     stopwatchHours = 0;
     stopwatchMinutes = 0;
@@ -74,7 +91,7 @@ class ApplicationState extends ChangeNotifier {
     print("Session Complete!");
     stopwatchHours = 0;
     stopwatchMinutes = 0;
-    isSessionActive = false;
+    sessionState = SessionState.inactive;
     notifyListeners();
   } // _onSessionComplete() end
 
@@ -102,18 +119,4 @@ class ApplicationState extends ChangeNotifier {
     stopwatchMinutes = newStopwatchMinutes.toInt();
     notifyListeners();
   } // updateStopWatchMinutes() end
-
-  Future<void> init() async {
-    await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform);
-
-    FirebaseUIAuth.configureProviders([
-      EmailAuthProvider(),
-    ]);
-
-    FirebaseAuth.instance.userChanges().listen((user) {
-      _loggedIn = user != null;
-      notifyListeners();
-    });
-  }
 }

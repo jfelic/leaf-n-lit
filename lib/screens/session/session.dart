@@ -1,11 +1,9 @@
-    // TODO: Create timer based on what the user inputs.
-    // Can use Timer class I think
-    
     import 'package:flutter/material.dart';
     import 'package:go_router/go_router.dart';
     import 'package:provider/provider.dart';
     // import 'package:leaf_n_lit/screens/home/stopwatch_display.dart';
     import 'package:leaf_n_lit/utilities/app_state.dart';
+    import 'package:leaf_n_lit/widgets/session_controls.dart';
 
     class SessionPage extends StatefulWidget {
       const SessionPage({Key? key}) : super(key: key);
@@ -33,26 +31,14 @@
               children: [
                 Text(
                   '${stopwatchHours.toString().padLeft(2, '0')}:${stopwatchMinutes.toString().padLeft(2, '0')}',
-                  style: TextStyle(fontSize: 30), // Optional: make it more visible
+                  style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
 
                 const SizedBox(height: 16),
 
-                if(appState.isSessionActive == false)
-                  ElevatedButton(
-                    onPressed: () {
-                      appState.startSession();
-                    },
-                    child: const Text('Start Session'),
-                  )
-                
-                else
-                  ElevatedButton(
-                    onPressed: () {
-                      appState.stopSession();
-                    },
-                    child: const Text("Stop Session"),
-                  ),
+                SessionControls(), // custom widget in our widget directory
+
+                const SizedBox(height: 16),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -76,6 +62,22 @@
 
                 const SizedBox(height: 16),
 
+                // Text display based on state of session to inform the user
+                if (appState.sessionState == SessionState.active)
+                  const Text(
+                    "Session is active :)",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )
+                else if (appState.sessionState == SessionState.inactive)
+                  const Text(
+                    "No active session :(",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )
+                else if (appState.sessionState == SessionState.paused)
+                  const Text(
+                    "Session is paused...",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )
               ],
             ),
           ),
@@ -167,7 +169,7 @@
                     ),
                   ],
                 ),
-                  const SizedBox(height: 100),
+                  const SizedBox(height: 50),
                 ],
               ),
             );

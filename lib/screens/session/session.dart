@@ -34,18 +34,26 @@
                 Text(
                   '${stopwatchHours.toString().padLeft(2, '0')}:${stopwatchMinutes.toString().padLeft(2, '0')}',
                   style: TextStyle(fontSize: 30), // Optional: make it more visible
-),
-
-
-                const SizedBox(height: 16),
-
-                ElevatedButton(
-                  onPressed: () {
-                    appState.startSession();
-                  },
-                  child: const Text('Start Session'),
                 ),
+
                 const SizedBox(height: 16),
+
+                if(appState.isSessionActive == false)
+                  ElevatedButton(
+                    onPressed: () {
+                      appState.startSession();
+                    },
+                    child: const Text('Start Session'),
+                  )
+                
+                else
+                  ElevatedButton(
+                    onPressed: () {
+                      appState.stopSession();
+                    },
+                    child: const Text("Stop Session"),
+                  ),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -54,16 +62,20 @@
                         _showSessionSettingsModal(context);
                       },
                       child: const Text("Session Duration"),
+
                     ),
                     const SizedBox(width: 16),
                     ElevatedButton(
                       onPressed: () {
-                        appState.stopSession();
+                        print("'Choose Plant' button pressed");
                       },
                       child: const Text("Choose Plant"),
                     ),
                   ],
                 ),
+
+                const SizedBox(height: 16),
+
               ],
             ),
           ),

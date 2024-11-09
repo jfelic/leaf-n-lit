@@ -19,12 +19,14 @@ class ApplicationState extends ChangeNotifier {
   int stopwatchHours = 1;
   int stopwatchMinutes = 45; 
   int totalSeconds = 0;
+  bool isSessionActive = false;
 
   // Timer related fields
   Timer? _sessionTimer;
 
   // Start the Timer
   void startSession() {
+    isSessionActive = true;
     // Cancel any existing timers
     _sessionTimer?.cancel();
 
@@ -35,17 +37,17 @@ class ApplicationState extends ChangeNotifier {
     _sessionTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       print('Timer ticked');
 
-      if(totalSeconds <= 0) { // Timer is finished
+      if(totalSeconds <= 60) { // Timer is finished because we add 60 at the start
         _sessionTimer?.cancel(); // Cancel timer
         _onSessionComplete(); // handle session completion
-        stopwatchHours = 0;
-        stopwatchMinutes = 0;
       } else {
         stopwatchHours = totalSeconds ~/ 3600;
         print("stopwatchHours: $stopwatchHours");
 
         stopwatchMinutes = (totalSeconds % 3600) ~/ 60; 
         print("stopwatchMinutes: $stopwatchMinutes");
+
+        print("Seconds left: $totalSeconds");
         totalSeconds -= 1; // Decrement total seconds
         notifyListeners(); // Notify UI of changes
       }
@@ -59,6 +61,7 @@ class ApplicationState extends ChangeNotifier {
 
   // Stop the session
   void stopSession() {
+    isSessionActive = false;
     _sessionTimer?.cancel();
     stopwatchHours = 0;
     stopwatchMinutes = 0;
@@ -68,12 +71,20 @@ class ApplicationState extends ChangeNotifier {
   // Handle the end of a session
   void _onSessionComplete() {
     // TODO: Handle when the session ends
+    print("Session Complete!");
+    stopwatchHours = 0;
+    stopwatchMinutes = 0;
+    isSessionActive = false;
+    notifyListeners();
   } // _onSessionComplete() end
 
   // Convert hours and minutes to seconds
   int convertHoursMinutestoSeconds (int hours, int minutes) {
-    int hoursToSeconds = hours * 3600;
+    if(hours == 0 && minutes == 0) { // early return if there's not time on the clock
+      return 0;
+    }
 
+    int hoursToSeconds = hours * 3600;
     int minutesToSeconds = minutes * 60;
 
     print("Total seconds: ${hoursToSeconds + minutesToSeconds}");

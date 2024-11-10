@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:leaf_n_lit/screens/library/library.dart';
 import 'package:leaf_n_lit/widgets/nav_bar.dart';
-import 'stopwatch_display.dart';
+// import 'stopwatch_display.dart';
+import 'package:leaf_n_lit/screens/session/session.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -16,7 +17,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    const StopwatchDisplay(),
+    const SessionPage(),
     const Center(child: Text('Garden')),
     LibraryPage(),
   ];

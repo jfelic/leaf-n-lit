@@ -1,3 +1,5 @@
+// TODO: Extract Timer from this file to make it less of a monolith
+
 import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, PhoneAuthProvider;
 import 'package:flutter/material.dart';

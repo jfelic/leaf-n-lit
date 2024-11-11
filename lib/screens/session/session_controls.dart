@@ -36,12 +36,18 @@ class SessionControls extends StatelessWidget{
               },
               child: const Icon(Icons.replay),
             ),
+
+            SizedBox(width: 16),
+
             ElevatedButton(
               onPressed: () {
                 appState.pauseSession();
               },
               child: const Icon(Icons.pause),
             ),
+
+            SizedBox(width: 16),
+
             ElevatedButton(
               onPressed: () {
                 appState.stopSession();
@@ -62,12 +68,18 @@ class SessionControls extends StatelessWidget{
               },
               child: const Icon(Icons.replay),
             ),
+
+            SizedBox(width: 16),
+
             ElevatedButton(
               onPressed: () {
                 appState.resumeSession();
               },
               child: const Icon(Icons.play_arrow),
             ),
+
+            SizedBox(width: 16),
+
             ElevatedButton(
               onPressed: () {
                 appState.stopSession();

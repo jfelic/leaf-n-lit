@@ -115,7 +115,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   void registerPressed() async {
     // - Display an error message if something goes wrong
     print('Register button pressed');
-    String name = nameController.text;
+    // String name = nameController.text;
     String email = emailController.text;
     String password = passwordController.text;
     String confirmPassword = confirmPasswordController.text;

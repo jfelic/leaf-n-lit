@@ -86,7 +86,7 @@ final GoRouter _router = GoRouter(
     ),
     GoRoute(
       path: "/library",
-      builder: (context, state) => LibraryPage(),
+      builder: (context, state) => const LibraryPage(),
     ),
     GoRoute(
       path: "/search",

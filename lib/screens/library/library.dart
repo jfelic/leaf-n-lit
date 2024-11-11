@@ -7,6 +7,8 @@ import 'package:leaf_n_lit/utilities/app_state.dart';
 import 'package:go_router/go_router.dart'; // Import this if you're using GoRouter for navigation
 
 class LibraryPage extends StatefulWidget {
+  const LibraryPage({super.key});
+
   @override
   _LibraryPageState createState() => _LibraryPageState();
 }

@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, PhoneAuthProvider;
 import 'package:flutter/material.dart';
+import 'package:leaf_n_lit/utilities/user_stats.dart';
 import 'dart:async';
 
 enum SessionState {
@@ -28,6 +29,7 @@ class ApplicationState extends ChangeNotifier {
   int stopwatchHours = 1;
   int stopwatchMinutes = 45; 
   int totalSeconds = 0;
+  int initialSeconds = 0;
   SessionState sessionState = SessionState.inactive;
 
 
@@ -43,6 +45,7 @@ class ApplicationState extends ChangeNotifier {
 
     // Convert stopwatchHours and stopwatchMinutes to seconds:
     totalSeconds = convertHoursMinutestoSeconds(stopwatchHours, stopwatchMinutes);
+    initialSeconds = convertHoursMinutestoSeconds(stopwatchHours, stopwatchMinutes);
 
     // Create timer
     _sessionTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -84,6 +87,7 @@ class ApplicationState extends ChangeNotifier {
     _sessionTimer?.cancel();
     stopwatchHours = 0;
     stopwatchMinutes = 0;
+    UserStats.updateTotalSecondsRead(initialSeconds);
     notifyListeners();
   } // stopSession() end
 
@@ -105,8 +109,6 @@ class ApplicationState extends ChangeNotifier {
 
     int hoursToSeconds = hours * 3600;
     int minutesToSeconds = minutes * 60;
-
-    print("Total seconds: ${hoursToSeconds + minutesToSeconds}");
     return hoursToSeconds + minutesToSeconds + 59; //Adding 59 seconds to not truncate immediatedly
   } // convertHoursMinutesToSeconds() end
 

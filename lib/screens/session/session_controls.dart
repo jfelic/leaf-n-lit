@@ -3,11 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:leaf_n_lit/utilities/app_state.dart';
+import 'package:leaf_n_lit/utilities/user_stats.dart';
 
 class SessionControls extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     ApplicationState appState = Provider.of<ApplicationState>(context);
+
 
     switch(appState.sessionState) {
       case SessionState.inactive:
@@ -32,15 +34,6 @@ class SessionControls extends StatelessWidget{
           children: [
             ElevatedButton(
               onPressed: () {
-                appState.stopSession();
-              },
-              child: const Icon(Icons.replay),
-            ),
-
-            SizedBox(width: 16),
-
-            ElevatedButton(
-              onPressed: () {
                 appState.pauseSession();
               },
               child: const Icon(Icons.pause),
@@ -51,6 +44,7 @@ class SessionControls extends StatelessWidget{
             ElevatedButton(
               onPressed: () {
                 appState.stopSession();
+                UserStats.updateTotalSecondsRead(appState.initialSeconds - appState.totalSeconds);
               },
               child: const Icon(Icons.close),
             ),
@@ -62,15 +56,6 @@ class SessionControls extends StatelessWidget{
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                appState.stopSession();
-              },
-              child: const Icon(Icons.replay),
-            ),
-
-            SizedBox(width: 16),
-
             ElevatedButton(
               onPressed: () {
                 appState.resumeSession();

@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:leaf_n_lit/utilities/app_state.dart';
 import 'package:leaf_n_lit/screens/session/session_controls.dart';
 import 'package:leaf_n_lit/screens/session/session_status_display.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // we need this import to interact with our database
 
 class SessionPage extends StatefulWidget {
   const SessionPage({Key? key}) : super(key: key);

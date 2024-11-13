@@ -5,6 +5,8 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:leaf_n_lit/screens/library/library_stats.dart';
+import 'package:leaf_n_lit/utilities/api_config.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -19,8 +21,6 @@ class _SearchScreenState extends State<SearchScreen> {
   bool _isLoading = false;
   String _errorMessage = '';
   Timer? _debounce;
-  
-  get apiKey => null;
 
   @override
   void initState() {
@@ -87,6 +87,21 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
+  Future<void> updateBookCount(int increment) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final userRef =
+          FirebaseFirestore.instance.collection('users').doc(user.uid);
+      try {
+        await userRef.update({
+          'bookCount': FieldValue.increment(increment),
+        });
+      } catch (e) {
+        print('Error updating book countL $e');
+      }
+    }
+  }
+
   Future<void> _addToLibrary(Book book) async {
     try {
       final user = FirebaseAuth.instance.currentUser;
@@ -101,6 +116,9 @@ class _SearchScreenState extends State<SearchScreen> {
           'author': book.author,
           'coverUrl': book.coverUrl,
         });
+
+        await UserLibraryStats.updateBookCount(1);
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('${book.title} added to your library')),
         );

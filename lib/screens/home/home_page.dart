@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leaf_n_lit/screens/garden/garden.dart';
 import 'package:leaf_n_lit/screens/library/library.dart';
 import 'package:leaf_n_lit/widgets/nav_bar.dart';
 // import 'stopwatch_display.dart';
@@ -18,7 +19,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final List<Widget> _pages = [
     const SessionPage(),
-    const Center(child: Text('Garden')),
+    GardenPage(),
     LibraryPage(),
   ];
 

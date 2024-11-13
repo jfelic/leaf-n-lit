@@ -1,6 +1,8 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:leaf_n_lit/screens/library/library_stats.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:leaf_n_lit/utilities/app_state.dart';
@@ -46,6 +48,21 @@ class _LibraryPageState extends State<LibraryPage> {
       setState(() {
         isLoading = false;
       });
+    }
+  }
+
+  Future<void> updateBookCount(int increment) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final userRef =
+          FirebaseFirestore.instance.collection('users').doc(user.uid);
+      try {
+        await userRef.update({
+          'bookCount': FieldValue.increment(increment),
+        });
+      } catch (e) {
+        print('Error updating book countL $e');
+      }
     }
   }
 
@@ -130,6 +147,7 @@ class _LibraryPageState extends State<LibraryPage> {
 
         if (snapshot.docs.isNotEmpty) {
           await snapshot.docs.first.reference.delete();
+          await UserLibraryStats.updateBookCount(-1);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
                 content: Text('${book['title']} removed from your library')),

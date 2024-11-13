@@ -56,6 +56,8 @@ class AuthService {
       return e.toString();
     }
   }
+
+  signOut() {}
 }
 // auth_service.dart
 

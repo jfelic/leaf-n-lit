@@ -5,7 +5,7 @@ import 'package:leaf_n_lit/utilities/auth_service.dart';
 import 'package:go_router/go_router.dart';
 
 class LogoutButton extends StatelessWidget {
-  const LogoutButton({Key? key}) : super(key: key);
+  const LogoutButton({super.key});
 
   @override
   Widget build(BuildContext context) {

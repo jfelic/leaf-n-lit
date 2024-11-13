@@ -56,4 +56,12 @@ class AuthService {
       return e.toString();
     }
   }
+
+  signOut() {}
+}
+// auth_service.dart
+
+// Function to log out the user
+Future<void> signOut() async {
+  await FirebaseAuth.instance.signOut();
 }

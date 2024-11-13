@@ -51,7 +51,7 @@ final GoRouter _router = GoRouter(
       pageBuilder: (context, state) {
         return CustomTransitionPage(
           key: state.pageKey,
-          child: MyHomePage(title: "Leaf n' Lit"),
+          child: const MyHomePage(title: "Leaf n' Lit"),
           transitionDuration: const Duration(milliseconds: 350),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SlideTransition(
@@ -70,7 +70,7 @@ final GoRouter _router = GoRouter(
       pageBuilder: (context, state) {
         return CustomTransitionPage(
           key: state.pageKey,
-          child: RegistrationScreen(),
+          child: const RegistrationScreen(),
           transitionDuration: const Duration(milliseconds: 350),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SlideTransition(
@@ -86,14 +86,14 @@ final GoRouter _router = GoRouter(
     ),
     GoRoute(
       path: "/library",
-      builder: (context, state) => LibraryPage(),
+      builder: (context, state) => const LibraryPage(),
     ),
     GoRoute(
       path: "/search",
       pageBuilder: (context, state) {
         return CustomTransitionPage(
           key: state.pageKey,
-          child: SearchScreen(),
+          child: const SearchScreen(),
           transitionDuration: const Duration(milliseconds: 350),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SlideTransition(

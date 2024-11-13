@@ -1,4 +1,4 @@
-// TODO: Extract Timer from this file to make it less of a monolith
+// TODO: Maybe extract Timer from this file to make it less of a monolith
 
 import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, PhoneAuthProvider;
@@ -26,8 +26,8 @@ class ApplicationState extends ChangeNotifier {
   bool get loggedIn => _loggedIn;
 
   // App-wide State fields
-  int stopwatchHours = 1;
-  int stopwatchMinutes = 45; 
+  int stopwatchHours = 0;
+  int stopwatchMinutes = 0; 
   int totalSeconds = 0;
   int initialSeconds = 0;
   SessionState sessionState = SessionState.inactive;

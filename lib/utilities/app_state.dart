@@ -87,7 +87,6 @@ class ApplicationState extends ChangeNotifier {
     _sessionTimer?.cancel();
     stopwatchHours = 0;
     stopwatchMinutes = 0;
-    UserStats.updateTotalSecondsRead(initialSeconds);
     notifyListeners();
   } // stopSession() end
 
@@ -97,6 +96,7 @@ class ApplicationState extends ChangeNotifier {
     print("Session Complete!");
     stopwatchHours = 0;
     stopwatchMinutes = 0;
+    UserStats.updateTotalSecondsRead(initialSeconds);
     sessionState = SessionState.inactive;
     notifyListeners();
   } // _onSessionComplete() end

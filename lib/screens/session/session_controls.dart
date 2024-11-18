@@ -45,6 +45,7 @@ class SessionControls extends StatelessWidget{
               onPressed: () {
                 appState.stopSession();
                 UserStats.updateTotalSecondsRead(appState.initialSeconds - appState.totalSeconds);
+                UserStats.updateNumberOfSessions();
               },
               child: const Icon(Icons.close),
             ),

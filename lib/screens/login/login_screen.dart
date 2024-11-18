@@ -1,3 +1,5 @@
+// login_screen.dart 
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:leaf_n_lit/utilities/auth_service.dart';
@@ -18,7 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: const Text('Login'),
       ),
       
       body: Padding(
@@ -34,26 +36,26 @@ class _LoginScreenState extends State<LoginScreen> {
             // Enter email
             TextField(
               controller: emailController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Email',
                 border: OutlineInputBorder(),
               ),
               keyboardType: TextInputType.emailAddress,
             ),
 
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
 
             // Enter password
             TextField(
               controller: passwordController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Password',
                 border: OutlineInputBorder(),
               ),
               obscureText: true,
             ),
 
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
 
             // Login button
             ElevatedButton(
@@ -85,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Center(
               child: Text(
                 _errorMessage ?? '',
-                style: TextStyle(color: Colors.red),
+                style: const TextStyle(color: Colors.red),
               )
             ),
 

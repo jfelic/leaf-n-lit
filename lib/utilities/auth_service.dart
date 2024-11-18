@@ -39,6 +39,7 @@ class AuthService {
   Future<String?> signInWithEmailAndPassword (String email, String password) async {
     try { // Success
       UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+      // We could perform additional tasks with userCredentials here, like storing certain fields of it in our database
 
       return null; // Return null if login is successful
 
@@ -59,9 +60,9 @@ class AuthService {
 
   signOut() {}
 }
-// auth_service.dart
 
 // Function to log out the user
 Future<void> signOut() async {
   await FirebaseAuth.instance.signOut();
 }
+

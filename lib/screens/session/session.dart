@@ -1,4 +1,7 @@
+// session.dart
+
 import 'package:flutter/material.dart';
+import 'package:leaf_n_lit/widgets/logout_button.dart';
 import 'package:provider/provider.dart';
 import 'package:leaf_n_lit/utilities/app_state.dart';
 import 'package:leaf_n_lit/screens/session/session_controls.dart';
@@ -62,6 +65,18 @@ class _SessionPageState extends State<SessionPage> {
             const SizedBox(height: 16),
 
             SessionStatusDisplay(),
+
+            const SizedBox(height: 300),
+            
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Logout: "
+                ),
+              LogoutButton(),
+              ],
+            )
           ],
         ),
       ),

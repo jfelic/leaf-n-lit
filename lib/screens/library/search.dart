@@ -9,6 +9,8 @@ import 'package:leaf_n_lit/screens/library/library_stats.dart';
 import 'package:leaf_n_lit/utilities/api_config.dart';
 
 class SearchScreen extends StatefulWidget {
+  const SearchScreen({super.key});
+
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }

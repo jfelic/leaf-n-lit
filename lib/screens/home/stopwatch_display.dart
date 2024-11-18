@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class StopwatchDisplay extends StatefulWidget {
-  const StopwatchDisplay({Key? key}) : super(key: key);
+  const StopwatchDisplay({super.key});
 
   @override
   _StopwatchDisplayState createState() => _StopwatchDisplayState();

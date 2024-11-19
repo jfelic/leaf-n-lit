@@ -67,6 +67,18 @@ flutter:
   assets:
     - assets/leaf_n_lit_logo.png
     - assets/tree.png
+    - assets/level_images/0.png
+    - assets/level_images/1.png
+    - assets/level_images/2.png
+    - assets/level_images/3.png
+    - assets/level_images/4.png
+    - assets/level_images/5.png
+    - assets/level_images/6.png
+    - assets/level_images/7.png
+    - assets/level_images/8.png
+    - assets/level_images/9.png
+    - assets/level_images/10.png
+    - assets/level_images/11.png
   
   # To add assets to your application, add an assets section, like this:
   # assets:

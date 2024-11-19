@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leaf_n_lit/utilities/auth_service.dart';
-import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -12,7 +10,6 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-
   // Create text controllers to retrieve the text entered by the user
   final nameController = TextEditingController();
   final emailController = TextEditingController();
@@ -41,7 +38,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            
             // Name
             TextField(
               decoration: InputDecoration(
@@ -116,44 +112,44 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
 // registration_screen.dart (in RegistrationScreen widget)
 
-void registerPressed() async {
-  print('Register button pressed');
-  String email = emailController.text;
-  String password = passwordController.text;
-  String confirmPassword = confirmPasswordController.text;
+  void registerPressed() async {
+    print('Register button pressed');
+    String email = emailController.text;
+    String password = passwordController.text;
+    String confirmPassword = confirmPasswordController.text;
 
-  if (password != confirmPassword) {
-    setState(() {
-      _errorMessage = 'Passwords do not match';
-    });
-    return;
-  }
-
-  AuthService authService = AuthService();
-
-  // Attempt to register the user
-  String? createUserWithEmailAndPasswordResult =
-      await authService.createUserWithEmailAndPassword(email, password);
-
-  if (createUserWithEmailAndPasswordResult == null) {
-    // Registration was successful
-
-    // Send email verification
-    User? currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser != null && !currentUser.emailVerified) {
-      await currentUser.sendEmailVerification();
+    if (password != confirmPassword) {
       setState(() {
-        _errorMessage = "Verification email has been sent! check your inbox.";
+        _errorMessage = 'Passwords do not match';
       });
+      return;
     }
 
-    // Navigate to home if needed
-    // GoRouter.of(context).go('/home');
-  } else {
-    // Registration failed
-    setState(() {
-      _errorMessage = createUserWithEmailAndPasswordResult;
-    });
+    AuthService authService = AuthService();
+
+    // Attempt to register the user
+    String? createUserWithEmailAndPasswordResult =
+        await authService.createUserWithEmailAndPassword(email, password);
+
+    if (createUserWithEmailAndPasswordResult == null) {
+      // Registration was successful
+
+      // Send email verification
+      User? currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser != null && !currentUser.emailVerified) {
+        await currentUser.sendEmailVerification();
+        setState(() {
+          _errorMessage = "Verification email has been sent! check your inbox.";
+        });
+      }
+
+      // Navigate to home if needed
+      // GoRouter.of(context).go('/home');
+    } else {
+      // Registration failed
+      setState(() {
+        _errorMessage = createUserWithEmailAndPasswordResult;
+      });
+    }
   }
-}
 }

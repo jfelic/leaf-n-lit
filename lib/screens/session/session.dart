@@ -4,6 +4,8 @@ import 'package:leaf_n_lit/utilities/app_state.dart';
 import 'package:leaf_n_lit/screens/session/session_controls.dart';
 import 'package:leaf_n_lit/screens/session/session_status_display.dart';
 
+import 'package:leaf_n_lit/utilities/user_stats.dart';
+
 class SessionPage extends StatefulWidget {
   const SessionPage({Key? key}) : super(key: key);
 
@@ -39,9 +41,6 @@ class _SessionPageState extends State<SessionPage> {
 
             const SizedBox(height: 16),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
                 ElevatedButton(
                   onPressed: () {
                     _showSessionSettingsModal(context);
@@ -49,15 +48,6 @@ class _SessionPageState extends State<SessionPage> {
                   child: const Text("Session Duration"),
 
                 ),
-                const SizedBox(width: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    print("'Choose Plant' button pressed");
-                  },
-                  child: const Text("Choose Plant"),
-                ),
-              ],
-            ),
 
             const SizedBox(height: 16),
 

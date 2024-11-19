@@ -14,13 +14,19 @@ class SessionStatusDisplay extends StatelessWidget{
       case SessionState.active:
         return const Text(
           "Session is active :)",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: Color.fromARGB(255, 81, 152, 60),
+            fontWeight: FontWeight.bold
+          ),
         );
 
       case SessionState.inactive:
         return const Text(
           "No active session :(",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: Color.fromARGB(255, 255, 95, 71),
+            fontWeight: FontWeight.bold,
+          ),
         );
 
       case SessionState.paused:

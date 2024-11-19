@@ -1,103 +1,82 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:leaf_n_lit/widgets/statistics.dart';
+import 'package:leaf_n_lit/screens/garden/garden_stats.dart';
 
 class GardenPage extends StatefulWidget {
+  const GardenPage({Key? key}) : super(key: key);
+
   @override
   _GardenPageState createState() => _GardenPageState();
 }
 
 class _GardenPageState extends State<GardenPage> {
-  int totalSecondsRead = 0;
-  int currentLevel = 1;
-  int currentSublevel = 0;
-  int levelsAchieved = 0;
+  late Future<Map<String, dynamic>> levelStats;
 
   @override
   void initState() {
     super.initState();
-    _fetchUserData();
-  }
-
-  /// Fetch user data from Firestore and check level progression
-  Future<void> _fetchUserData() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      final userRef =
-          FirebaseFirestore.instance.collection('users').doc(user.uid);
-      final userData = await userRef.get();
-
-      if (userData.exists) {
-        setState(() {
-          totalSecondsRead = userData.data()?['totalSecondsRead'] ?? 0;
-          currentLevel = userData.data()?['currentLevel'] ?? 1;
-          currentSublevel = userData.data()?['currentSublevel'] ?? 0;
-          levelsAchieved = userData.data()?['levelsAchieved'] ?? 0;
-        });
-      }
-
-      // Update level progress
-      await _checkLevelProgress(userRef);
-    }
-  }
-
-  // Check and update level progression
-  Future<void> _checkLevelProgress(DocumentReference userRef) async {
-    const int secondsPerSublevel = 300; // 5 minutes per sublevel
-    const int maxSublevel = 4;
-    const int maxLevel = 3;
-
-    // Calculate total sublevels completed
-    int sublevelsCompleted = totalSecondsRead ~/ secondsPerSublevel;
-
-    // Determine new level and sublevel
-    int newLevel = (sublevelsCompleted ~/ maxSublevel) + 1;
-    int newSublevel = sublevelsCompleted % maxSublevel;
-
-    // Cap at maximum level and sublevel
-    if (newLevel > maxLevel) {
-      newLevel = maxLevel;
-      newSublevel = maxSublevel;
-    }
-
-    // Update Firestore only if levels have changed
-    if (newLevel != currentLevel || newSublevel != currentSublevel) {
-      setState(() {
-        currentLevel = newLevel;
-        currentSublevel = newSublevel;
-        levelsAchieved = currentLevel - 1;
-      });
-
-      await userRef.update({
-        'currentLevel': currentLevel,
-        'currentSublevel': currentSublevel,
-        'levelsAchieved': levelsAchieved,
-      });
-    }
+    levelStats = LevelStats.getlevelStats();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Garden'),
+        title: const Text("My Garden"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const Text(
-              'Level Progression Calculation Only',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-            Expanded(
-              child: StatisticsWidget(),
-            ),
-          ],
-        ),
+      body: FutureBuilder<Map<String, dynamic>>(
+        future: levelStats,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError || !snapshot.hasData) {
+            return const Center(
+              child: Text("An error occurred. Please try again."),
+            );
+          }
+
+          final stats = snapshot.data!;
+          if (stats.containsKey('message')) {
+            return Center(
+              child: Text(
+                stats['message'],
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            );
+          }
+
+          // Extract stats
+          final bookCount = stats['bookCount'] as int;
+          final totalSecondsRead = stats['totalSecondsRead'] as int;
+          final avgLengthOfSessions = stats['avgLengthOfSessions'] as double;
+          final numberOfSessions = stats['numberOfSessions'] as int;
+          final fullLevelsAchieved = stats['fullLevelsAchieved'] as int;
+
+          return ListView(
+            padding: const EdgeInsets.all(16.0),
+            children: [
+              _buildStatItem("Total Books Read", bookCount.toString()),
+              _buildStatItem(
+                  "Total Number of Seconds Read", totalSecondsRead.toString()),
+              _buildStatItem("Average Length of Session",
+                  avgLengthOfSessions.toStringAsFixed(2) + " seconds"),
+              _buildStatItem(
+                  "Total Number of Sessions", numberOfSessions.toString()),
+              _buildStatItem("Plants Reaching Highest Sublevel",
+                  fullLevelsAchieved.toString()),
+            ],
+          );
+        },
       ),
+    );
+  }
+
+  Widget _buildStatItem(String label, String value) {
+    return ListTile(
+      title: Text(label),
+      trailing: Text(value),
     );
   }
 }

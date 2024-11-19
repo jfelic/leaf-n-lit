@@ -35,53 +35,51 @@ final GoRouter _router = GoRouter(
       path: "/login",
       pageBuilder: (context, state) {
         return CustomTransitionPage(
-          key: state.pageKey,
-          child: LoginScreen(),
-          transitionDuration: const Duration(milliseconds: 800),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return FadeTransition(
-            opacity: animation, 
-            child: child);
-          }
-        );
+            key: state.pageKey,
+            child: LoginScreen(),
+            transitionDuration: const Duration(milliseconds: 800),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(opacity: animation, child: child);
+            });
       },
     ),
     GoRoute(
       path: "/home",
       pageBuilder: (context, state) {
         return CustomTransitionPage(
-          key: state.pageKey,
-          child: const MyHomePage(title: "Leaf n' Lit"),
-          transitionDuration: const Duration(milliseconds: 350),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position: Tween<Offset> (
-                begin: const Offset(1.0, 0.0),
-                end: Offset.zero,
-              ).animate(animation),
-              child: child,
-            );
-          }
-        );
+            key: state.pageKey,
+            child: const MyHomePage(title: "Leaf n' Lit"),
+            transitionDuration: const Duration(milliseconds: 350),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            });
       },
     ),
     GoRoute(
       path: "/register",
       pageBuilder: (context, state) {
         return CustomTransitionPage(
-          key: state.pageKey,
-          child: const RegistrationScreen(),
-          transitionDuration: const Duration(milliseconds: 350),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position: Tween<Offset> (
-                begin: const Offset(1.0, 0.0),
-                end: Offset.zero,
-              ).animate(animation),
-              child: child,
-            );
-          }
-        );
+            key: state.pageKey,
+            child: const RegistrationScreen(),
+            transitionDuration: const Duration(milliseconds: 350),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            });
       },
     ),
     GoRoute(
@@ -92,19 +90,19 @@ final GoRouter _router = GoRouter(
       path: "/search",
       pageBuilder: (context, state) {
         return CustomTransitionPage(
-          key: state.pageKey,
-          child: const SearchScreen(),
-          transitionDuration: const Duration(milliseconds: 350),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position: Tween<Offset> (
-                begin: const Offset(1.0, 0.0),
-                end: Offset.zero,
-              ).animate(animation),
-              child: child,
-            );
-          }
-        );
+            key: state.pageKey,
+            child: const SearchScreen(),
+            transitionDuration: const Duration(milliseconds: 350),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            });
       },
     ),
   ],

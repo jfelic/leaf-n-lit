@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:leaf_n_lit/utilities/auth_service.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -34,31 +35,31 @@ class _LoginScreenState extends State<LoginScreen> {
             // Enter email
             TextField(
               controller: emailController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Email',
                 border: OutlineInputBorder(),
               ),
               keyboardType: TextInputType.emailAddress,
             ),
 
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
 
             // Enter password
             TextField(
               controller: passwordController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Password',
                 border: OutlineInputBorder(),
               ),
               obscureText: true,
             ),
 
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
 
             // Login button
             ElevatedButton(
               onPressed: () { loginPressed(context); },
-              child: Text('Login'),
+              child: const Text('Login'),
             ),
 
             const SizedBox(height: 20.0),
@@ -68,13 +69,13 @@ class _LoginScreenState extends State<LoginScreen> {
             onPressed:()  {
               GoRouter.of(context).push('/register');
             }, 
-            child: RichText(text: const TextSpan(
+            child: RichText(text: TextSpan(
               text: "Don't have an account? ",
-              style: TextStyle(color: Colors.black),
-              children: <TextSpan>[
+              style: GoogleFonts.breeSerif(color: Colors.black),
+              children: const <TextSpan>[
                 TextSpan(
                   text: 'Register',
-                  style: TextStyle(color: Color.fromARGB(255, 55, 126, 57), fontWeight: FontWeight.bold),
+                  style: TextStyle(color: Color.fromARGB(255, 55, 126, 57)),
                     ),
                   ],
                 ),
@@ -85,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Center(
               child: Text(
                 _errorMessage ?? '',
-                style: TextStyle(color: Colors.red),
+                style: const TextStyle(color: Colors.red),
               )
             ),
 

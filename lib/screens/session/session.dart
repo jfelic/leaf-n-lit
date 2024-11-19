@@ -3,8 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:leaf_n_lit/utilities/app_state.dart';
 import 'package:leaf_n_lit/screens/session/session_controls.dart';
 import 'package:leaf_n_lit/screens/session/session_status_display.dart';
-
-import 'package:leaf_n_lit/utilities/user_stats.dart';
+import 'package:leaf_n_lit/widgets/logout_button.dart';
 
 class SessionPage extends StatefulWidget {
   const SessionPage({Key? key}) : super(key: key);
@@ -25,6 +24,7 @@ class _SessionPageState extends State<SessionPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
+        actions: const [LogoutButton()],
       ),
       body: Center(
         child: Column(

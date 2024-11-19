@@ -97,6 +97,7 @@ class ApplicationState extends ChangeNotifier {
     stopwatchHours = 0;
     stopwatchMinutes = 0;
     UserStats.updateTotalSecondsRead(initialSeconds);
+    UserStats.updateNumberOfSessions();
     sessionState = SessionState.inactive;
     notifyListeners();
   } // _onSessionComplete() end

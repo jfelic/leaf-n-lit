@@ -25,7 +25,15 @@ class SessionControls extends StatelessWidget{
               appState.startSession(); 
             }
           },
-          child: const Text('Start Session'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 81, 152, 60),
+          ),
+          child: const Text(
+            'Start Session',
+            style: TextStyle(
+              color: Colors.white,
+            )
+          ),
         );
 
       case SessionState.active:
@@ -42,12 +50,27 @@ class SessionControls extends StatelessWidget{
             SizedBox(width: 16),
 
             ElevatedButton(
-              onPressed: () {
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 255, 95, 71),
+              ),
+              onPressed: () async {
+                int secondsRead = appState.initialSeconds - appState.totalSeconds;
+                print("Initial seconds: ${appState.initialSeconds}");
+                print("Total seconds: ${appState.totalSeconds}");
+                print("Seconds read: $secondsRead");
+
                 appState.stopSession();
-                UserStats.updateTotalSecondsRead(appState.initialSeconds - appState.totalSeconds);
-                UserStats.updateNumberOfSessions();
+
+                // Using await as to not call all 3 methods simultaneously and cause a race condition
+                await UserStats.setTotalSecondsRead(secondsRead);
+                await UserStats.setNumberOfSessions();
+                await UserStats.setAvgLengthOfSessions();
+
               },
-              child: const Icon(Icons.close),
+              child: const Icon(
+                Icons.close,
+                color: Colors.white,
+              ),
             ),
             
           ],
@@ -64,7 +87,7 @@ class SessionControls extends StatelessWidget{
               child: const Icon(Icons.play_arrow),
             ),
 
-            SizedBox(width: 16),
+            const SizedBox(width: 16),
 
             ElevatedButton(
               onPressed: () {

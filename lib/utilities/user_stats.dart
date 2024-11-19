@@ -2,16 +2,90 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class UserStats {
+  /* GETTERS */
+
+  // avgLengthOfSessions
+  static Future<double> getAvgLengthOfSessions() async {
+    final user = FirebaseAuth.instance.currentUser;
+    
+    if(user == null) {
+      print("user == null... returning 0");
+      return 0;
+    }
+
+
+      try {
+        final docSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+
+        Map<String, dynamic> userStats = Map<String, dynamic>.from(
+          docSnapshot.data()?['userStats'] ?? {}
+      );
+        double avgLengthOfSessions = (userStats["avgLengthOfSessions"] ?? 0) as double;
+
+        return avgLengthOfSessions;
+        
+      } catch (e) {
+        print("getAvgLengthOfSessions failed: $e... returning 0");
+        return 0;
+      }
+  } // getAvgLengthOfSessions() end
+
+
+/* SETTERS */
+
+  static Future<void> setAvgLengthOfSessions() async {
+    // get user
+    final user = FirebaseAuth.instance.currentUser;
+    if(user == null) {
+      print("setAvgLengthOfSessions: user == null... returning");
+      return;
+    }
+
+    try {
+      // get doc snapshot
+      final docSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get();
+
+      Map<String, dynamic> userStats = Map<String, dynamic>.from(
+        docSnapshot.data()?['userStats'] ?? {}
+      );
+
+      // Get numberOfSessions
+      int numberOfSessions = userStats['numberOfSessions'] ?? 0;
+
+      // Get totalSecondsRead
+      int totalSecondsRead = userStats['totalSecondsRead'] ?? 0;
+
+      // Set avgLengthOfSessions
+      userStats['avgLengthOfSessions'] = (totalSecondsRead / numberOfSessions);
+
+      // Update document with our updated map
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .update({
+            'userStats': userStats,
+          });
+
+    } catch (e) {
+        print("setAvgLengthOfSessions failed: $e");
+        return;
+    }
+  }
 
   // Update total seconds read
-  static Future<void> updateTotalSecondsRead(int seconds) async {
+  static Future<void> setTotalSecondsRead(int seconds) async {
     // Use Firebase Auth to grab current user
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       print("user == null... returning"); 
       return;
     }
-
       
     try {
       // Get document snapshot first
@@ -36,17 +110,17 @@ class UserStats {
       await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
-          .set({
+          .update({
             'userStats': userStats,
-          }, SetOptions(merge: true));
+          });
       
     } catch (e) {
       print("Error updating reading stats: $e");
     }
-  } // updateTotalSecondsRead() end
+  } // setTotalSecondsRead() end
 
   // Increment # of sessions by 1 
-  static Future<void> updateNumberOfSessions() async {
+  static Future<void> setNumberOfSessions() async {
     // Use Firebase Auth to grab current user
     final user = FirebaseAuth.instance.currentUser;
 
@@ -58,7 +132,10 @@ class UserStats {
 
     try {
       // Get snapshot
-      final docSnapshot = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      final docSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid) 
+        .get();
       
       Map<String, dynamic> userStats = Map<String, dynamic>.from (
         docSnapshot.data()?['userStats'] ?? {}
@@ -74,9 +151,9 @@ class UserStats {
       await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
-        .set({
+        .update({
           'userStats': userStats,
-        }, SetOptions(merge: true));
+        });
     } catch (e) {
       print("Error updating totalSessions: $e");
     }
@@ -85,11 +162,6 @@ class UserStats {
   // static Future<void> storeSession(Session session) async {
 
   // }
-
-  // Update average length of user's sessions
-  static Future<void> updateAvgLengthOfSessions() async {
-
-  } // updateAvgLengthOfSessions() end
 }
 /* 
   user fields

@@ -10,6 +10,7 @@ import 'screens/registration/registration_screen.dart';
 import 'screens/login/login_screen.dart';
 import 'screens/library/library.dart';
 import 'screens/library/search.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -120,6 +121,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
+        textTheme: GoogleFonts.breeSerifTextTheme(), // Possible options: lexend, breeSerif, patuaOne
       ),
       routerConfig: _router,
     );

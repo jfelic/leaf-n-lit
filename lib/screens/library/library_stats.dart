@@ -24,15 +24,24 @@ class UserLibraryStats {
       // Get the current book count, defaulting to 0 if it doesn't exist
       int currentBookCount = (userLibraryStats['bookCount'] ?? 0) as int;
 
+      // Calculate the updated book count
+      int updatedBookCount = currentBookCount + increment;
+
+      // Prevent bookCount from going negative
+      if (updatedBookCount < 0) {
+        print("Book count cannot be negative. Operation aborted.");
+        return;
+      }
+
       // Update the book count
-      userLibraryStats['bookCount'] = currentBookCount + increment;
+      userLibraryStats['bookCount'] = updatedBookCount;
 
       // Save the updated map to Firestore
       await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
         'userLibraryStats': userLibraryStats,
       }, SetOptions(merge: true));
 
-      print("Book count updated successfully: ${currentBookCount + increment}");
+      print("Book count updated successfully: $updatedBookCount");
     } catch (e) {
       print("Error updating book count: $e");
     }

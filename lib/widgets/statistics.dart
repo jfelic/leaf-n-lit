@@ -23,13 +23,38 @@ class StatisticsWidget extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
 
+        // If the document does not exist or data is null
+        if (!snapshot.data!.exists || snapshot.data!.data() == null) {
+          return const Center(
+            child: Text(
+              'Start reading to view your stats',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          );
+        }
+
         final userData = snapshot.data!.data() as Map<String, dynamic>;
+
+        // Handle missing fields gracefully
         int totalBooks = userData['bookCount'] ?? 0;
         int totalSecondsRead = userData['totalSecondsRead'] ?? 0;
         int numberOfSessions = userData['numberOfSessions'] ?? 0;
         double averageSessionLength =
             numberOfSessions > 0 ? totalSecondsRead / numberOfSessions : 0;
         int levelsAchieved = userData['levelsAchieved'] ?? 0;
+
+        // If all fields are zero (user hasn't started reading)
+        if (totalBooks == 0 &&
+            totalSecondsRead == 0 &&
+            numberOfSessions == 0 &&
+            levelsAchieved == 0) {
+          return const Center(
+            child: Text(
+              'Start reading to view your stats',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          );
+        }
 
         return ListView(
           children: [

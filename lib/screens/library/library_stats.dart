@@ -2,32 +2,64 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class UserLibraryStats {
+  // Update the book count by a given increment
   static Future<void> updateBookCount(int increment) async {
-    // Use Firebase Auth to grab current user
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
-      print("user == null... returning");
+      print("User is null, cannot update book count");
       return;
     }
 
     try {
-      // Get document snapshot first
+      // Get the user's Firestore document
       final docSnapshot = await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
           .get();
 
-      // Then get the data from the snapshot
-      int currentBookCount = (docSnapshot.data()?['bookCount'] ?? 0)
-          as int; // or initialize it as 0 if it doesn't exist
-      // Reference the user's document and attempt to update bookCount
+      // Get or initialize userLibraryStats map
+      Map<String, dynamic> userLibraryStats = Map<String, dynamic>.from(
+          docSnapshot.data()?['userLibraryStats'] ?? {});
+
+      // Get the current book count, defaulting to 0 if it doesn't exist
+      int currentBookCount = (userLibraryStats['bookCount'] ?? 0) as int;
+
+      // Update the book count
+      userLibraryStats['bookCount'] = currentBookCount + increment;
+
+      // Save the updated map to Firestore
       await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
-        'bookCount': currentBookCount + increment,
+        'userLibraryStats': userLibraryStats,
       }, SetOptions(merge: true));
 
-      print("Book count updated successfully");
+      print("Book count updated successfully: ${currentBookCount + increment}");
     } catch (e) {
       print("Error updating book count: $e");
+    }
+  }
+
+  // Fetch the current book count
+  static Future<int> getBookCount() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      print("User is null, cannot fetch book count");
+      return 0;
+    }
+
+    try {
+      // Get the user's Firestore document
+      final docSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+
+      // Get the userLibraryStats map and retrieve the book count
+      Map<String, dynamic> userLibraryStats = Map<String, dynamic>.from(
+          docSnapshot.data()?['userLibraryStats'] ?? {});
+      return (userLibraryStats['bookCount'] ?? 0) as int;
+    } catch (e) {
+      print("Error fetching book count: $e");
+      return 0;
     }
   }
 }

@@ -91,19 +91,11 @@ class UserStats {
 
   } // updateAvgLengthOfSessions() end
 }
-
-/*
-  Session struct
-  length:
-  date:
-  pagesRead:
-*/
-
 /* 
   user fields
   totalSecondsRead:
   numberOfSessions:
   avgLengthOfSessions:
   streak:
-  sessions: 
+  Session sessions: 
  */

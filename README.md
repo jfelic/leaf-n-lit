@@ -38,18 +38,18 @@ flutter run
 ## Screenshots
 <table>
   <tr>
-    <td><img src="screenshots/login_screen.png" width="275" height="600"/></td>
-    <td><img src="screenshots/registration_screen.png" width="275" height="600"/></td>
-    <td><img src="screenshots/session_screen.png" width="275" height="600"/></td>
+    <td><img src="screenshots/login_screen.png" width="275" height="550"/></td>
+    <td><img src="screenshots/registration_screen.png" width="275" height="550"/></td>
+    <td><img src="screenshots/session_screen.png" width="275" height="550"/></td>
   </tr>
   <tr>
-    <td><img src="screenshots/active_session.png" width="275" height="600"/></td>
-    <td><img src="screenshots/garden_screen.png" width="275" height="600"/></td>
-    <td><img src="screenshots/library_screen.png" width="275" height="600"/></td>
+    <td><img src="screenshots/active_session.png" width="275" height="550"/></td>
+    <td><img src="screenshots/garden_screen.png" width="275" height="550"/></td>
+    <td><img src="screenshots/library_screen.png" width="275" height="550"/></td>
   </tr>
   <tr>
-    <td><img src="screenshots/add_book_screen.png" width="275" height="600"/></td>
-    <td><img src="screenshots/search_book.png" width="275" height="600"/></td>
+    <td><img src="screenshots/add_book_screen.png" width="275" height="550"/></td>
+    <td><img src="screenshots/search_book.png" width="275" height="550"/></td>
     <td></td>
   </tr>
 </table>

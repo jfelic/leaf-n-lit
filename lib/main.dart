@@ -122,6 +122,7 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.breeSerifTextTheme(), // Possible options: lexend, breeSerif, patuaOne
       ),
       routerConfig: _router,
+      debugShowCheckedModeBanner: false,
     );
   }
 }

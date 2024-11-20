@@ -1,16 +1,53 @@
-# leaf_n_lit
+# Leaf n' Lit 🌱📚
 
-A new Flutter project.
+A **Flutter** mobile app combining reading tracking with virtual plant care.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+1. Install Flutter development environment:
+  - Follow the [Flutter Installation Guide](https://docs.flutter.dev/get-started/install)
 
-A few resources to get you started if this is your first Flutter project:
+2. Clone and setup:
+  ```bash
+  git clone https://github.com/jfelic/leaf-n-lit.git 
+  cd LeafnLit
+  flutter pub get
+  ```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+3. Run the app:
+```bash
+flutter run
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Screenshots
+<img src="screenshots/login_screen.png" width="275" height="600"/>
+<img src="screenshots/registration_screen.png" width="275" height="600"/>
+<img src="screenshots/session_screen.png" width="275" height="600"/>
+<img src="screenshots/active_session.png" width="275" height="600"/>
+<img src="screenshots/garden_screen.png" width="275" height="600"/>
+<img src="screenshots/library_screen.png" width="275" height="600"/>
+<img src="screenshots/add_book_screen.png" width="275" height="600"/>
+<img src="screenshots/search_book.png" width="275" height="600"/>
+
+## Features
+
+### Reading Tracking
+- Track reading sessions and stats
+- Build your personal book library
+- Search and add books via Google Books API
+
+### Virtual Garden
+- Earn plants through reading sessions
+- Level up plants as you read more
+- View garden progress and stats
+
+### User System
+- Create personal account
+- Save reading data and garden progress
+- Track individual reading statistics
+
+## Technologies used
+- Flutter/Dart
+- Google Books API
+- Firebase Authentication
+- Firebase Firestore

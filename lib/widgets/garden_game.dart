@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:leaf_n_lit/utilities/app_state.dart';
 
 class GardenGame extends StatefulWidget {
-  const GardenGame({Key? key}) : super(key: key);
+  const GardenGame({super.key});
 
   @override
   _GardenGameState createState() => _GardenGameState();

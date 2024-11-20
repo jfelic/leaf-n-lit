@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
+import 'package:provider/provider.dart';
+import 'package:leaf_n_lit/utilities/app_state.dart';
 
 class GardenGame extends StatefulWidget {
   const GardenGame({Key? key}) : super(key: key);
@@ -13,7 +15,6 @@ class GardenGame extends StatefulWidget {
 }
 
 class _GardenGameState extends State<GardenGame> {
-  Timer? _growthTimer;
   int _currentStage = 0;
   int _fullLevelsAchieved = 0;
 
@@ -37,23 +38,56 @@ class _GardenGameState extends State<GardenGame> {
         _currentStage = levelStats['levelCounter'] ?? 0;
         _fullLevelsAchieved = levelStats['fullLevelsAchieved'] ?? 0;
       });
-
-      _startGrowthTimer();
     }
   }
 
-  void _startGrowthTimer() {
-    _growthTimer = Timer.periodic(const Duration(seconds: 20), (timer) {
-      setState(() {
-        if (_currentStage < 11) {
-          _currentStage++;
-        } else {
-          _currentStage = 0;
-          _fullLevelsAchieved++;
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<ApplicationState>(
+      builder: (context, appState, child) {
+        if (appState.sessionState == SessionState.active) {
+          _updateGrowth(appState.totalSeconds);
         }
+
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildPlantSlot(0),
+                  const SizedBox(width: 20),
+                  _buildPlantSlot(1),
+                  const SizedBox(width: 20),
+                  _buildPlantSlot(2),
+                ],
+              ),
+              const SizedBox(height: 20),
+              if (_fullLevelsAchieved >= 3)
+                const Text(
+                  'You Win!',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _updateGrowth(int totalSecondsRead) {
+    int newStage = totalSecondsRead ~/ 20;
+    if (newStage > 11) {
+      newStage = 11;
+      _fullLevelsAchieved = (totalSecondsRead ~/ 20) ~/ 12;
+    }
+    if (newStage != _currentStage) {
+      setState(() {
+        _currentStage = newStage;
       });
       _saveProgress();
-    });
+    }
   }
 
   void _saveProgress() async {
@@ -66,39 +100,6 @@ class _GardenGameState extends State<GardenGame> {
         },
       }, SetOptions(merge: true));
     }
-  }
-
-  @override
-  void dispose() {
-    _growthTimer?.cancel();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _buildPlantSlot(0),
-              const SizedBox(width: 20),
-              _buildPlantSlot(1),
-              const SizedBox(width: 20),
-              _buildPlantSlot(2),
-            ],
-          ),
-          const SizedBox(height: 20),
-          if (_fullLevelsAchieved >= 3)
-            const Text(
-              'You Win!',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-        ],
-      ),
-    );
   }
 
   Widget _buildPlantSlot(int index) {

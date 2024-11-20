@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leaf_n_lit/screens/garden/garden_stats.dart';
+import 'package:leaf_n_lit/widgets/garden_game.dart'; // Import the GardenGame widget
 
 class GardenPage extends StatefulWidget {
   const GardenPage({Key? key}) : super(key: key);
@@ -41,8 +42,7 @@ class _GardenPageState extends State<GardenPage> {
             return Center(
               child: Text(
                 stats['message'],
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             );
           }
@@ -58,14 +58,12 @@ class _GardenPageState extends State<GardenPage> {
             padding: const EdgeInsets.all(16.0),
             children: [
               _buildStatItem("Total Books Read", bookCount.toString()),
-              _buildStatItem(
-                  "Total Number of Seconds Read", totalSecondsRead.toString()),
-              _buildStatItem("Average Length of Session",
-                  avgLengthOfSessions.toStringAsFixed(2) + " seconds"),
-              _buildStatItem(
-                  "Total Number of Sessions", numberOfSessions.toString()),
-              _buildStatItem("Plants Reaching Highest Sublevel",
-                  fullLevelsAchieved.toString()),
+              _buildStatItem("Total Number of Seconds Read", totalSecondsRead.toString()),
+              _buildStatItem("Average Length of Session", "${avgLengthOfSessions.toStringAsFixed(2)} seconds"),
+              _buildStatItem("Total Number of Sessions", numberOfSessions.toString()),
+              _buildStatItem("Plants Reaching Highest Sublevel", fullLevelsAchieved.toString()),
+              const SizedBox(height: 20),
+              const GardenGame(), // Add the GardenGame widget here to display the garden
             ],
           );
         },
@@ -80,3 +78,4 @@ class _GardenPageState extends State<GardenPage> {
     );
   }
 }
+
